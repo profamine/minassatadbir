@@ -135,85 +135,31 @@
     </div>
   </section>
 
-  <!-- ══════════ استمارة الطلب ══════════ -->
+  <!-- ══════════ استمارة الطلب (استمارة جوجل مضمَّنة) ══════════ -->
   <section id="request" style="scroll-margin-block-start:calc(var(--nav-h) + 20px)">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="sec-tag">الاستمارة</span>
-        <h2>طلب نسخة من المنصّة الموحّدة للتدبير المدرسي</h2>
+        <h2>املأ الاستمارة، فتصلك النسخة</h2>
+        <p>دقيقة واحدة. يصلك الملف والدليل المرافق والرمز السري على بريدك.
+          مجّانية بالكامل ولا يُطلب فيها أي مقابل مادي.</p>
       </div>
 
-      <div class="form-card rv">
-        <div class="form-intro" id="formIntro">
-          <p>التطبيق <b>مجاني بالكامل ولا يتطلب أي مقابل مادي</b>. الهدف من هذه الاستمارة ليس البيع
-            ولا جمع بيانات لأغراض تجارية، بل:</p>
-          <ul>
-            <li><span data-icon="check" data-size="18"></span>
-              <span>إحصاء عدد المؤسسات والمستفيدين المنخرطين في استعمال المنصّة، لمعرفة حجم الانتشار.</span></li>
-            <li><span data-icon="check" data-size="18"></span>
-              <span>تحسين التطبيق باستمرار بناءً على احتياجات المستعملين الفعليين.</span></li>
-            <li><span data-icon="check" data-size="18"></span>
-              <span>حلّ المشاكل التقنية التي قد تحول دون استفادتكم الكاملة من خدمات المنصّة،
-                والتواصل معكم مباشرة عند الحاجة.</span></li>
-          </ul>
-          <div class="seal">
-            <span data-icon="lock" data-size="19"></span>
-            <span>جميع البيانات المُدخلة تُستعمل فقط لهذه الأغراض، وسيتم إرسال الملف
-              والدليل المرافق والرمز السري فور تعبئة الاستمارة.</span>
-          </div>
+      <div class="gform-card rv">
+        <div class="gform-bar">
+          <span class="dot" aria-hidden="true"></span>
+          <span>استمارة آمنة عبر Google Forms</span>
+          <a href="" id="gformOpen" target="_blank" rel="noopener">
+            <span data-icon="pop" data-size="15"></span> افتحها في نافذة مستقلّة</a>
         </div>
-
-        <form id="requestForm" novalidate>
-          <div class="form-grid">
-            <div class="field">
-              <label for="f-name">الاسم الكامل<span class="req">*</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required>
-              <span class="err"><span data-icon="x" data-size="13"></span> المرجو كتابة الاسم الكامل</span>
-            </div>
-            <div class="field">
-              <label for="f-school">المؤسسة التعليمية<span class="req">*</span></label>
-              <input id="f-school" name="school" type="text" required>
-              <span class="err"><span data-icon="x" data-size="13"></span> المرجو كتابة اسم المؤسسة</span>
-            </div>
-            <div class="field">
-              <label for="f-direction">المديرية الإقليمية<span class="req">*</span></label>
-              <input id="f-direction" name="direction" type="text" required>
-              <span class="err"><span data-icon="x" data-size="13"></span> المرجو كتابة المديرية الإقليمية</span>
-            </div>
-            <div class="field">
-              <label for="f-role">الصفة<span class="req">*</span></label>
-              <select id="f-role" name="role" required>
-                <option value="" disabled selected>اختر صفتك…</option>
-              </select>
-              <span class="err"><span data-icon="x" data-size="13"></span> المرجو اختيار الصفة</span>
-            </div>
-            <div class="field">
-              <label for="f-email">البريد الإلكتروني<span class="req">*</span></label>
-              <input id="f-email" name="email" type="email" dir="ltr" autocomplete="email"
-                     placeholder="exemple@gmail.com" required>
-              <span class="hint">إليه تُرسَل المنصّة والدليل والرمز السري.</span>
-              <span class="err"><span data-icon="x" data-size="13"></span> المرجو كتابة بريد إلكتروني صحيح</span>
-            </div>
-            <div class="field">
-              <label for="f-whatsapp">رقم الواتساب <span class="opt">(اختياري)</span></label>
-              <input id="f-whatsapp" name="whatsapp" type="tel" dir="ltr" inputmode="tel"
-                     autocomplete="tel" placeholder="06XXXXXXXX">
-              <span class="hint">لتسريع الإرسال، وللانضمام إلى المجموعة إن قبلتم الدعوة.</span>
-            </div>
-            <div class="field wide">
-              <label for="f-note">ملاحظة أو طلب خاص <span class="opt">(اختياري)</span></label>
-              <textarea id="f-note" name="note" rows="4"
-                placeholder="تطبيق يهمّك أكثر، صعوبة تقنية، أو أي ملاحظة…"></textarea>
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button class="btn btn-main" type="submit" id="formSubmit">
-              <span data-icon="send" data-size="18"></span> أرسل الطلب</button>
-            <span class="form-status" id="formStatus" role="status" aria-live="polite"></span>
-          </div>
-        </form>
+        <iframe id="gformFrame" src="" title="استمارة طلب نسخة من المنصّة الموحّدة للتدبير المدرسي"
+                loading="lazy">جارٍ تحميل الاستمارة…</iframe>
       </div>
+
+      <p class="gform-fallback rv">
+        لا تظهر الاستمارة؟ <a href="" id="gformAlt" target="_blank" rel="noopener">افتحها مباشرةً من هنا</a>
+        — أو راسلني على <a href="mailto:amahanamine0@gmail.com" dir="ltr">amahanamine0@gmail.com</a>.
+      </p>
     </div>
   </section>
 
