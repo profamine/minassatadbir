@@ -101,7 +101,7 @@ function buildChrome() {
     </div>
     <div class="foot-bot">
       <span>© ${new Date().getFullYear()} المنصّة الموحّدة للتدبير المدرسي — إعداد أمين أمهان.</span>
-      <span>صُمِّم للعمل محليًّا · لا نجمع عنك أي معطيات · بلا إعلانات</span>
+      <span>صُمِّم للعمل محليًّا · بلا تتبُّع · بلا إعلانات</span>
     </div>
   </div>`;
   document.body.appendChild(foot);
@@ -301,7 +301,7 @@ function openDrawer(id) {
       <img class="shot" src="${imgOf(a.img)}" alt="لقطة من تطبيق ${a.t}">
       <h4>ما الذي يمكنك فعله الآن؟</h4>
       <div class="d-actions">
-        <a class="d-act" href="${REQUEST_URL}">
+        <a class="d-act" href="download.html#request">
           <span class="ic" style="background:linear-gradient(135deg,var(--a3),var(--a4))">${icon('mailat', 19)}</span>
           <span><b>اطلب نسخة من المنصّة</b><small>ملف واحد يضمّ هذا التطبيق و18 غيره</small></span>
           <span class="arw">${icon('arrow', 18)}</span></a>
@@ -561,7 +561,7 @@ function initCmdK() {
     ...APPS.map(a => { const ax = AX(a.ax); return { t: a.t, s: ax.n, href: `apps.html#${a.id}`, ic: a.ic, c: ax.c, c2: ax.c2 }; }),
     ...VIDEOS.map(v => ({ t: 'فيديو: ' + v.t, s: v.dur + ' دقيقة', href: `videos.html?v=${v.id}`, ic: 'play', c: 'var(--a2)', c2: 'var(--a2b)' })),
     ...LIBRARY.map(g => ({ t: 'دليل: ' + g.t, s: 'PDF · ' + g.s, href: P.guide(g.f), dl: g.name, ic: 'pdf', c: 'var(--a5)', c2: 'var(--a5b)' })),
-    { t: 'اطلب نسخة من المنصّة', s: 'بالبريد الإلكتروني', href: REQUEST_URL, ic: 'mailat', c: 'var(--a1)', c2: 'var(--a1b)' }
+    { t: 'اطلب نسخة من المنصّة', s: 'استمارة قصيرة', href: 'download.html#request', ic: 'mailat', c: 'var(--a1)', c2: 'var(--a1b)' }
   ];
   pool.forEach(p => p.k = norm(p.t + ' ' + p.s));
 
@@ -607,8 +607,122 @@ function initIcons() {
 }
 
 /* ─────────── أزرار طلب نسخة ─────────── */
+/* كلّها تقود إلى استمارة صفحة الطلب. */
 function initRequest() {
-  $$('a[data-request]').forEach(a => { a.href = REQUEST_URL; });
+  $$('a[data-request]').forEach(a => {
+    a.href = PAGE === 'download' ? '#request' : 'download.html#request';
+  });
+}
+
+/* ─────────── استمارة طلب نسخة ─────────── */
+function initForm() {
+  const form = $('#requestForm');
+  if (!form) return;
+
+  // تعبئة قائمة الصفة من السجلّ
+  const sel = $('#f-role', form);
+  ROLES.forEach(r => sel.appendChild(Object.assign(el('option'), { value: r, textContent: r })));
+
+  const status = $('#formStatus'), btn = $('#formSubmit');
+  const fieldOf = inp => inp.closest('.field');
+
+  const valid = inp => {
+    if (!inp.required && !inp.value.trim()) return true;
+    if (!inp.value.trim()) return false;
+    if (inp.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim());
+    return true;
+  };
+  const check = inp => { const ok = valid(inp); fieldOf(inp).classList.toggle('bad', !ok); return ok; };
+
+  $$('input,select,textarea', form).forEach(inp => {
+    inp.addEventListener('blur', () => check(inp));
+    // أزل علامة الخطأ فور بدء التصحيح
+    inp.addEventListener('input', () => { if (fieldOf(inp).classList.contains('bad')) check(inp); });
+  });
+
+  const values = () => Object.fromEntries(
+    $$('input,select,textarea', form).map(i => [i.name, i.value.trim()]));
+
+  /* البديل بلا خادم: رسالة بريد معبّأة بكل الحقول */
+  const viaMail = v => {
+    const lines = Object.keys(FORM_LABELS)
+      .filter(k => v[k])
+      .map(k => `${FORM_LABELS[k]}: ${v[k]}`);
+    const body = 'السلام عليكم،\n\nأرغب في الحصول على نسخة من المنصّة الموحّدة للتدبير المدرسي.\n\n'
+               + lines.join('\n') + '\n\nوشكرًا لكم.';
+    const url = 'mailto:' + REQUEST_MAIL
+      + '?subject=' + encodeURIComponent('طلب نسخة من المنصّة الموحّدة للتدبير المدرسي')
+      + '&body=' + encodeURIComponent(body);
+    /* نقر رابط مخفي لا إسناد location.href: الإسناد قد يُفقد الصفحة
+       (فيضيع بيان النجاح) إن لم يكن للنظام برنامج بريد مسجَّل. */
+    const a = Object.assign(el('a'), { href: url });
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 0);
+  };
+
+  /* الإرسال إلى خدمة استمارات إن ضُبط endpoint */
+  const viaEndpoint = async v => {
+    const fd = new FormData();
+    Object.entries(FORM.fields).forEach(([k, name]) => { if (v[k]) fd.append(name, v[k]); });
+    Object.entries(FORM.extra || {}).forEach(([k, val]) => fd.append(k, val));
+    const res = await fetch(FORM.endpoint, {
+      method: 'POST', body: fd, mode: FORM.noCors ? 'no-cors' : 'cors'
+    });
+    // مع no-cors تكون الاستجابة مبهمة ولا يمكن قراءة حالتها — نعدّها ناجحة
+    if (!FORM.noCors && !res.ok) throw new Error('HTTP ' + res.status);
+  };
+
+  const success = (v, mailed) => {
+    const card = form.closest('.form-card');
+    const rows = Object.keys(FORM_LABELS).filter(k => v[k])
+      .map(k => `<div><b>${FORM_LABELS[k]}</b><span>${v[k].replace(/</g, '&lt;')}</span></div>`).join('');
+    card.innerHTML = `<div class="form-ok">
+      <div class="tick">${icon('check', 34, 2.6)}</div>
+      <h3>${mailed ? 'بقيت خطوة واحدة' : 'وصل طلبك — شكرًا لك'}</h3>
+      <p>${mailed
+        ? 'فُتحت رسالة جاهزة في برنامج بريدك بكل ما عبّأته. <b>اضغط «إرسال» فيها</b> ليصلني الطلب. '
+          + 'إن لم تُفتح، راسلني مباشرةً على <b dir="ltr">' + REQUEST_MAIL + '</b>.'
+        : 'سيصلك الملف والدليل المرافق والرمز السري على بريدك في أقرب وقت. '
+          + 'إن تأخّر الجواب، تحقّق من مجلّد «الرسائل غير المرغوب فيها».'}</p>
+      <div class="form-recap">${rows}</div>
+      <p style="margin-block-start:22px">
+        <a class="btn btn-soft btn-sm" href="guide.html">اقرأ دليل الاستعمال ريثما تصلك النسخة</a></p>
+    </div>`;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const inputs = $$('input,select,textarea', form);
+    const bad = inputs.filter(i => !check(i));
+    if (bad.length) {
+      status.textContent = `أكمل ${bad.length === 1 ? 'الحقل المطلوب' : bad.length + ' حقول مطلوبة'} أولًا.`;
+      status.classList.add('bad');
+      bad[0].focus();
+      bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    status.classList.remove('bad');
+    const v = values();
+
+    if (!FORM.endpoint) { success(v, true); viaMail(v); return; }
+
+    const label = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span> جارٍ الإرسال…';
+    status.textContent = '';
+    try {
+      await viaEndpoint(v);
+      success(v, false);
+    } catch (err) {
+      btn.disabled = false; btn.innerHTML = label;
+      status.classList.add('bad');
+      status.textContent = 'تعذّر الإرسال. سنستعمل بريدك بدلًا من ذلك…';
+      setTimeout(() => { success(v, true); viaMail(v); }, 1200);
+    }
+  });
 }
 
 /* ─────────── تأكيد التحميل ─────────── */
@@ -630,6 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCmdK();
   initCounters();
   initRequest();
+  initForm();
   initDownloads();
   initReveal();
 });

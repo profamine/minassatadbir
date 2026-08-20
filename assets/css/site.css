@@ -471,3 +471,63 @@ footer{border-block-start:1px solid var(--line);background:var(--surf);margin-bl
   body{background:#fff;color:#000}
   .card,.step-body,.qa{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
 }
+
+/* ═══════════ استمارة طلب نسخة ═══════════ */
+.form-card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-l);
+  padding:clamp(24px,4vw,40px);box-shadow:var(--shadow-l);position:relative;overflow:hidden;
+  max-width:760px;margin-inline:auto}
+.form-card::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;height:5px;
+  background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a4),var(--a5),var(--a6))}
+.form-intro{color:var(--txt2);font-size:15.5px}
+.form-intro ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.form-intro li{display:flex;gap:12px;align-items:flex-start}
+.form-intro li svg{flex:none;margin-block-start:4px;color:var(--a1)}
+.form-intro .seal{display:flex;gap:12px;align-items:flex-start;margin-block-start:18px;padding:15px 17px;
+  border-radius:var(--r-s);background:color-mix(in srgb,var(--a1) 9%,var(--surf2));
+  border:1px solid color-mix(in srgb,var(--a1) 26%,var(--line));font-size:14.6px;color:var(--txt2)}
+.form-intro .seal svg{flex:none;margin-block-start:3px;color:var(--a1)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-block-start:28px}
+@media (max-width:640px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.wide{grid-column:1/-1}
+.field label{font-size:14.5px;font-weight:700;color:var(--txt)}
+.field label .opt{font-weight:500;color:var(--txt3);font-size:13px}
+.field label .req{color:var(--a5);margin-inline-start:2px}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px 15px;border-radius:var(--r-s);border:1px solid var(--line);
+  background:var(--surf2);color:var(--txt);outline:none;transition:.2s;font-family:inherit;
+  font-size:16px}   /* 16px حدّ أدنى: أقلّ منه يجعل سفاري iOS يكبّر الصفحة عند التركيز */
+.field textarea{resize:vertical;min-height:96px;line-height:1.7}
+.field select{cursor:pointer;appearance:none;
+  background-image:linear-gradient(45deg,transparent 49%,var(--txt3) 50%,transparent 52%),
+                   linear-gradient(135deg,transparent 49%,var(--txt3) 50%,transparent 52%);
+  background-size:7px 7px,7px 7px;background-repeat:no-repeat;
+  background-position:left 18px top 22px,left 12.5px top 22px}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--brand);background:var(--surf);box-shadow:0 0 0 4px var(--ring)}
+.field .hint{font-size:12.8px;color:var(--txt3);line-height:1.6}
+.field .err{font-size:13px;color:var(--a5);font-weight:600;display:none;align-items:center;gap:6px}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--a5);background:color-mix(in srgb,var(--a5) 5%,var(--surf2))}
+.field.bad .err{display:flex}
+
+.form-actions{margin-block-start:26px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.form-actions .btn[disabled]{opacity:.6;pointer-events:none}
+.form-status{font-size:14px;color:var(--txt2)}
+.form-status.bad{color:var(--a5);font-weight:700}
+.spin{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.35);
+  border-block-start-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.form-ok{text-align:center;padding:22px 6px}
+.form-ok .tick{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;margin:0 auto 20px;
+  color:#fff;background:linear-gradient(135deg,var(--a1),var(--a1b));
+  box-shadow:0 18px 40px -16px var(--a1);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.form-ok .tick{animation:none}.spin{animation-duration:2s}}
+.form-ok h3{font-size:23px}
+.form-ok p{color:var(--txt2);margin-block-start:12px;max-width:520px;margin-inline:auto}
+.form-recap{text-align:start;margin:24px auto 0;max-width:460px;display:grid;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden}
+.form-recap div{background:var(--surf2);padding:10px 15px;display:flex;gap:12px;font-size:14.2px}
+.form-recap b{color:var(--txt3);font-weight:600;min-width:120px;flex:none}
