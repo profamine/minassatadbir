@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>دليل الاستعمال — المنصّة الموحّدة للتدبير المدرسي</title>
+<meta name="description" content="دليل كامل لاستعمال المنصّة الموحّدة: التحميل، جولة في الواجهة، أين تُحفظ المعطيات، النسخ الاحتياطي والاستعادة، الطباعة، وحلّ المشكلات الشائعة.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f6ef7'/%3E%3Cpath d='m12 5 7 3.6-7 3.6-7-3.6z' fill='%23fff'/%3E%3Cpath d='m5 12.4 7 3.6 7-3.6' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+  .guide-layout{display:grid;grid-template-columns:230px 1fr;gap:44px;align-items:start}
+  @media (max-width:900px){.guide-layout{grid-template-columns:1fr;gap:24px}}
+  .toc{position:sticky;inset-block-start:calc(var(--nav-h) + 20px);background:var(--surf);border:1px solid var(--line);
+    border-radius:var(--r);padding:18px}
+  @media (max-width:900px){.toc{position:static}}
+  .toc h4{font-size:13px;color:var(--txt3);letter-spacing:.05em;margin-block-end:10px}
+  .toc a{display:block;padding:7px 11px;border-radius:9px;font-size:14.5px;color:var(--txt2);transition:.18s}
+  .toc a:hover{background:var(--surf3);color:var(--txt)}
+  .toc a.on{background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand);font-weight:700}
+  .doc h2{font-size:clamp(22px,3.4vw,30px);margin-block:0 16px;scroll-margin-block-start:calc(var(--nav-h) + 24px)}
+  .doc h3{font-size:19px;margin-block:28px 10px}
+  .doc>section{padding-block:0 clamp(40px,6vw,64px)}
+  .doc p{color:var(--txt2);margin-block-end:14px}
+  .doc ul{color:var(--txt2);padding-inline-start:22px;margin-block:0 16px}
+  .doc li{margin-block-end:9px}
+  .note{display:flex;gap:14px;padding:18px 20px;border-radius:var(--r-s);background:var(--surf2);
+    border:1px solid var(--line);border-inline-start:4px solid var(--c,var(--brand));margin-block:18px}
+  .note .ic{flex:none;color:var(--c,var(--brand));margin-block-start:3px}
+  .note b{display:block;margin-block-end:5px;color:var(--txt)}
+  .note p{margin:0;font-size:14.8px}
+  .ui-table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden;
+    font-size:14.8px;margin-block:8px 20px}
+  .ui-table th{background:var(--surf3);text-align:start;padding:12px 15px;font-size:14px;color:var(--txt2)}
+  .ui-table td{padding:12px 15px;border-block-start:1px solid var(--line);color:var(--txt2)}
+  .ui-table td:first-child{white-space:nowrap;font-weight:700;color:var(--txt)}
+  .ui-table tr:hover td{background:var(--surf2)}
+  .tbl-wrap{overflow-x:auto}
+</style>
+</head>
+<body data-page="guide">
+
+<main id="main">
+  <section style="padding-block-end:34px">
+    <div class="wrap">
+      <div class="sec-head rv" style="margin-block-end:0">
+        <span class="sec-tag">دليل الاستعمال</span>
+        <h1>من التحميل إلى أوّل وثيقة مطبوعة</h1>
+        <p>هذا الدليل يشرح المنصّة الموحّدة نفسها — الغلاف الذي يحتضن التطبيقات التسعة عشر.
+          ولكلّ تطبيق دليله المفصَّل في المكتبة أسفل الصفحة.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-block-start:0">
+    <div class="wrap guide-layout">
+
+      <!-- الفهرس -->
+      <aside class="toc rv">
+        <h4>محتويات الدليل</h4>
+        <a href="#start">١. الحصول عليها وتشغيلها</a>
+        <a href="#ui">٢. جولة في الواجهة</a>
+        <a href="#data">٣. أين تُحفظ معطياتك</a>
+        <a href="#backup">٤. النسخ الاحتياطي</a>
+        <a href="#print">٥. الطباعة والتصدير</a>
+        <a href="#trouble">٦. حلّ المشكلات</a>
+        <a href="#faq">٧. أسئلة شائعة</a>
+        <a href="#library">٨. مكتبة الأدلة</a>
+      </aside>
+
+      <div class="doc">
+
+        <!-- ١ -->
+        <section id="start" class="rv">
+          <h2>١. الحصول على المنصّة وتشغيلها</h2>
+          <p>المنصّة ملف <code class="path">.html</code> واحد. لا مثبِّت، ولا قاعدة بيانات، ولا صلاحيات إدارية.
+            تُطلب بالبريد ولا تُنزَّل من الموقع مباشرةً.</p>
+          <div class="steps" style="margin-block:24px">
+            <div class="step" style="--c:var(--a1);--c2:var(--a1b)">
+              <div class="n">١</div>
+              <div class="step-body"><h3>احفظ الملف في مكان ثابت</h3>
+                <p>حين تصلك النسخة بالبريد، فُكَّ ضغط الملف وضعه في مجلّد لن تحذفه — مثلًا
+                  <code class="path">C:\Users\...\Documents\المنصة\</code>.
+                  هذه النقطة أهمّ ممّا تبدو: معطياتك مرتبطة بمكان الملف، كما سيأتي في الفقرة الثالثة.</p></div>
+            </div>
+            <div class="step" style="--c:var(--a2);--c2:var(--a2b)">
+              <div class="n">٢</div>
+              <div class="step-body"><h3>افتحه بنقرة مزدوجة</h3>
+                <p>سيفتح في متصفّحك الافتراضي. يُنصح بـ <b>كروم</b> أو <b>إيدج</b> في نسخة حديثة.
+                  إن فتح في متصفّح آخر: انقر بالزرّ الأيمن ← «فتح باستخدام» ← اختر كروم، ثم اجعله دائمًا.</p></div>
+            </div>
+            <div class="step" style="--c:var(--a3);--c2:var(--a3b)">
+              <div class="n">٣</div>
+              <div class="step-body"><h3>ثبّته في متناول يدك</h3>
+                <p>في كروم: القائمة ← «حفظ وتصدير» أو «المزيد من الأدوات» ← «إنشاء اختصار».
+                  أو ببساطة اسحب الملف إلى سطح المكتب مع <kbd>Alt</kbd> لإنشاء اختصار.
+                  فتصير المنصّة على بُعد نقرة واحدة كلّ صباح.</p></div>
+            </div>
+            <div class="step" style="--c:var(--a4);--c2:var(--a4b)">
+              <div class="n">٤</div>
+              <div class="step-body"><h3>عرّف المنصّة بنفسك</h3>
+                <p>من أيقونة <b>الإعدادات</b> أسفل الشريط الجانبي، أدخل اسمك واسم مؤسستك.
+                  ستُستعمل هذه المعطيات تلقائيًّا في ترويسات الوثائق والمحاضر التي تطبعها.</p></div>
+            </div>
+          </div>
+          <p style="text-align:center">
+            <a class="btn btn-main" data-request href="mailto:amahanamine0@gmail.com">
+              <span data-icon="mailat" data-size="20"></span> اطلب نسخة من المنصّة</a>
+          </p>
+        </section>
+
+        <!-- ٢ -->
+        <section id="ui" class="rv">
+          <h2>٢. جولة في الواجهة</h2>
+          <p>الواجهة مبنية على فكرة واحدة: <b>شريط جانبي للاختيار، وألسنة للعمل</b> — تمامًا كما تفعل في متصفّحك.</p>
+
+          <h3>الشريط الجانبي</h3>
+          <p>يضمّ المحاور الستة، وتحت كلّ محور تطبيقاته. انقر التطبيق فيُفتح في لسان جديد.
+            الشريط يعرض أيضًا التطبيقات التي استعملتها مؤخّرًا حتى تصل إليها بسرعة.</p>
+
+          <h3>الألسنة</h3>
+          <p>كلّ تطبيق مفتوح يحتلّ لسانًا بلون محوره. تنتقل بينها بالنقر، وتغلقها بعلامة ×.
+            التطبيقات لا تُحمَّل إلا عند فتحها فعلًا — لذلك تبقى المنصّة سريعة مهما فتحت.
+            وعند إغلاق المنصّة وإعادة فتحها، تُستعاد ألسنة جلستك السابقة كما تركتها.</p>
+
+          <h3>شريط الأدوات</h3>
+          <div class="tbl-wrap">
+          <table class="ui-table">
+            <thead><tr><th>الأداة</th><th>وظيفتها</th></tr></thead>
+            <tbody>
+              <tr><td>بحث سريع <kbd>Ctrl</kbd>+<kbd>K</kbd></td><td>اكتب أوّل حروف اسم التطبيق فيُفتح مباشرةً — أسرع طريق داخل المنصّة.</td></tr>
+              <tr><td>دليل التطبيق</td><td>يفتح دليل PDF الخاص بالتطبيق النشط (يظهر فقط للتطبيقات التي لها دليل).</td></tr>
+              <tr><td>إعادة تحميل</td><td>يعيد تشغيل التطبيق النشط وحده دون المساس ببقية الألسنة.</td></tr>
+              <tr><td>طباعة</td><td>يطبع محتوى التطبيق النشط بصيغته الرسمية.</td></tr>
+              <tr><td>نافذة مستقلة</td><td>يفتح التطبيق في نافذة منفصلة — مفيد للعمل على شاشتين، أو لتطبيق ثقيل.</td></tr>
+              <tr><td>ملء الشاشة</td><td>يوسّع مساحة العمل ويخفي شريط المتصفّح.</td></tr>
+              <tr><td>الإعدادات</td><td>اسمك، اسم المؤسسة، وخيارات العرض.</td></tr>
+              <tr><td>المظهر</td><td>تبديل بين السمة الفاتحة والداكنة.</td></tr>
+              <tr><td>التشخيص</td><td>سجلّ الأخطاء وحالة التخزين — ارجع إليه إن تعثّر تطبيق.</td></tr>
+              <tr><td>نسخ احتياطي</td><td>تصدير كلّ معطياتك في ملف واحد، أو استعادتها.</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <!-- ٣ -->
+        <section id="data" class="rv">
+          <h2>٣. أين تُحفظ معطياتك</h2>
+          <p>كلّ ما تُدخله — لوائح التلاميذ، النتائج، المراسلات، المداخيل — يُحفظ في
+            <b>التخزين المحلي لمتصفّحك</b> على حاسوبك أنت. لا يُرسل شيء إلى أيّ خادم، ولا يوجد حساب ولا كلمة سرّ.</p>
+          <div class="note" style="--c:var(--a5)">
+            <span class="ic" data-icon="bolt" data-size="22"></span>
+            <div><b>القاعدة الذهبية: نفس الملف، نفس المسار، نفس المتصفّح</b>
+              <p>المتصفّح يربط المعطيات بمكان الملف. إذا نقلت الملف إلى مجلّد آخر، أو فتحته بمتصفّح آخر،
+                أو أعدت تحميله في «التنزيلات» كنسخة جديدة — فستجد المنصّة فارغة كأنك تفتحها لأول مرّة.
+                <b>معطياتك لم تضع</b>، لكنّها مرتبطة بالمسار القديم. أرجِع الملف إلى مكانه الأصلي لتعود.</p></div>
+          </div>
+          <div class="note" style="--c:var(--a6)">
+            <span class="ic" data-icon="lock" data-size="22"></span>
+            <div><b>احذر «مسح بيانات التصفّح»</b>
+              <p>إذا مسحت بيانات المتصفّح أو الكوكيز واخترت «بيانات المواقع»، ستُمسح معطيات المنصّة معها.
+                لهذا السبب بالذات، خذ نسخة احتياطية أسبوعيًّا — الفقرة التالية تشرح كيف، في نقرتين.</p></div>
+          </div>
+          <div class="note" style="--c:var(--a1)">
+            <span class="ic" data-icon="check" data-size="22"></span>
+            <div><b>في المقابل: خصوصية كاملة</b>
+              <p>معطيات تلاميذك وأطرك لا تغادر حاسوبك أبدًا. لا رفع، ولا تتبُّع، ولا طرف ثالث —
+                وهذا ما يجعل المنصّة صالحة للاستعمال في معطيات شخصية حسّاسة.</p></div>
+          </div>
+        </section>
+
+        <!-- ٤ -->
+        <section id="backup" class="rv">
+          <h2>٤. النسخ الاحتياطي والاستعادة</h2>
+          <p>هذه أهمّ عادة يمكن أن تكتسبها مع المنصّة. لا تتجاوز عشر ثوانٍ.</p>
+          <h3>لأخذ نسخة</h3>
+          <ul>
+            <li>انقر أيقونة <b>النسخ الاحتياطي</b> أسفل الشريط الجانبي.</li>
+            <li>اختر <b>«تنزيل نسخة احتياطية»</b>، فيُحفظ ملف باسم
+              <code class="path">نسخة-احتياطية-2026-08-19.json</code> يضمّ معطيات كلّ التطبيقات.</li>
+            <li>احفظه في مجلّد خارج الحاسوب: قرص خارجي، أو مفتاح USB، أو خدمة سحابية إن سمحت بذلك ضوابط مؤسستك.</li>
+          </ul>
+          <h3>للاستعادة</h3>
+          <ul>
+            <li>من النافذة نفسها اختر <b>«استعادة من ملف…»</b> وحدّد ملف النسخة.</li>
+            <li>ستُطلب منك موافقة صريحة قبل الاستبدال، ثم تُعاد المنصّة تلقائيًّا.</li>
+          </ul>
+          <div class="note" style="--c:var(--a3)">
+            <span class="ic" data-icon="clock" data-size="22"></span>
+            <div><b>متى تأخذ نسخة؟</b>
+              <p>قبل أي عملية كبيرة (استيراد لوائح جديدة، حذف جماعي، تغيير سنة دراسية)،
+                وبشكل دوري كلّ نهاية أسبوع. وقبل تحديث المنصّة إلى نسخة أحدث — دائمًا.</p></div>
+          </div>
+          <div class="note" style="--c:var(--a2)">
+            <span class="ic" data-icon="layers" data-size="22"></span>
+            <div><b>الترقية إلى نسخة جديدة</b>
+              <p>خذ نسخة احتياطية أوّلًا، ثم <b>استبدل الملف القديم بالجديد في المسار نفسه وبالاسم نفسه</b>.
+                بهذه الطريقة تبقى معطياتك في مكانها ولا تحتاج حتى إلى الاستعادة.</p></div>
+          </div>
+        </section>
+
+        <!-- ٥ -->
+        <section id="print" class="rv">
+          <h2>٥. الطباعة والتصدير</h2>
+          <p>معظم التطبيقات تُنتج وثيقة نهائية: محضرًا، لائحة، شهادة أو بطاقات.</p>
+          <ul>
+            <li><b>الطباعة:</b> استعمل زرّ الطباعة داخل التطبيق (لا طباعة المتصفّح)، فهو يهيّئ الصفحة بالمقاس والترويسة الصحيحين.</li>
+            <li><b>الحفظ كـ PDF:</b> في نافذة الطباعة، اختر الطابعة «حفظ بصيغة PDF» / <span dir="ltr">Save as PDF</span>.</li>
+            <li><b>التصدير إلى إكسل:</b> عدّة تطبيقات توفّر زرّ «تصدير Excel» للوائح والجداول، لتتابع العمل عليها في إكسل.</li>
+            <li><b>قبل الطباعة الجماعية،</b> اطبع نسخة واحدة للتحقّق من الهوامش واتجاه الورقة (عمودي/أفقي).</li>
+          </ul>
+        </section>
+
+        <!-- ٦ -->
+        <section id="trouble" class="rv">
+          <h2>٦. حلّ المشكلات</h2>
+          <div class="tbl-wrap">
+          <table class="ui-table">
+            <thead><tr><th>العَرَض</th><th>الحلّ</th></tr></thead>
+            <tbody>
+              <tr><td>المنصّة فارغة بعد أن كانت مليئة</td>
+                <td>غالبًا نُقل الملف أو فُتح من مسار/متصفّح مختلف. أرجِعه إلى مساره الأصلي، أو استعد نسختك الاحتياطية.</td></tr>
+              <tr><td>تطبيق لا يُنهي التحميل</td>
+                <td>تظهر رسالة بعد 12 ثانية تعرض عليك فتحه في نافذة مستقلة — اقبلها. غالبًا حجم معطياته كبير.</td></tr>
+              <tr><td>«التخزين شبه ممتلئ»</td>
+                <td>افتح <b>التشخيص</b>، وستجد حجم كلّ تطبيق. خذ نسخة احتياطية، ثم احذف معطيات السنوات السابقة.</td></tr>
+              <tr><td>الطباعة تخرج مقطوعة</td>
+                <td>في نافذة الطباعة اضبط «الهوامش: بلا» و«المقياس: ملاءمة عرض الصفحة»، وتحقّق من اتجاه الورقة.</td></tr>
+              <tr><td>الخطّ العربي يظهر مشوَّهًا</td>
+                <td>يحدث عند أوّل فتح دون إنترنت قبل تحميل الخطّ. افتح المنصّة مرّة واحدة مع الإنترنت، فيُخزَّن الخطّ ويعمل بعدها دون اتصال.</td></tr>
+              <tr><td>ملف إكسل لا يُقرأ</td>
+                <td>تأكّد أنه بصيغة <code class="path">.xlsx</code> وأن أسماء الأعمدة لم تُحذف من السطر الأوّل.</td></tr>
+              <tr><td>شيء آخر لم يُذكر هنا</td>
+                <td>افتح <b>التشخيص</b> وانسخ آخر سطر من السجلّ، ثم أرسله إلى البريد أسفل الصفحة مع وصف ما كنت تفعل.</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <!-- ٧ -->
+        <section id="faq" class="rv">
+          <h2>٧. أسئلة شائعة</h2>
+          <div class="faq">
+            <details class="qa"><summary>كيف أحصل على المنصّة؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">تُطلب بالبريد: اضغط أي زرّ «اطلب نسخة من المنصّة» في الموقع، فتُفتح رسالة جاهزة
+                تملؤها باسمك ومؤسستك ومديريتك. ستصلك النسخة في ملف مضغوط
+                <code class="path">.zip</code> — فُكَّ ضغطه ثم افتح ملف <code class="path">.html</code> بداخله.</div></details>
+            <details class="qa"><summary>هل المنصّة مجانية؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">نعم، ومجّانية تمامًا للمؤسسات التعليمية والأطر التربوية. لا اشتراك ولا ترخيص ولا نسخة مدفوعة.</div></details>
+            <details class="qa"><summary>هل تحتاج إلى إنترنت؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">لا. كلّ التطبيقات تشتغل دون اتصال. الاتصال مفيد فقط في أوّل فتح لتحميل الخطّ العربي،
+                وفي التطبيقات التي تبحث في قواعد خارجية مثل «دليل المؤسسات التعليمية».</div></details>
+            <details class="qa"><summary>هل يمكن استعمالها على أكثر من حاسوب؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">نعم: انسخ الملف إلى الحاسوب الثاني. لكن المعطيات لا تتزامن تلقائيًّا بين الحاسوبين —
+                لنقلها استعمل ملف النسخة الاحتياطية: صدِّر من الأوّل، واستعد في الثاني.</div></details>
+            <details class="qa"><summary>هل تعمل على الهاتف أو اللوحة؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">تفتح وتشتغل، لكنّها صُمّمت لشاشة الحاسوب: الجداول والوثائق تحتاج عرضًا كافيًا.
+                استعمل الهاتف للاطّلاع، والحاسوب للإدخال والطبع.</div></details>
+            <details class="qa"><summary>ماذا لو حذفت الملف بالخطأ؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">اطلب نسخة جديدة وضعها في المسار نفسه بالاسم نفسه، فتعود معطياتك.
+                إن تغيّر المسار، استعد نسختك الاحتياطية.</div></details>
+            <details class="qa"><summary>هل معطيات التلاميذ في أمان؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">المعطيات لا تغادر حاسوبك، وهذا أقوى ضمان تقني. تبقى مسؤوليتك: احمِ حاسوبك بكلمة سرّ،
+                ولا تترك الجلسة مفتوحة، واحفظ النسخ الاحتياطية في مكان آمن.
+                <br><br>أمّا هذا الموقع فلا يجمع عنك شيئًا ولا يستعمل أي أداة تتبُّع. الفيديوهات التوضيحية
+                قد تُشغَّل عبر يوتيوب، ومشغّله لا يُحمَّل إلا بعد نقرك أنت على زرّ التشغيل.</div></details>
+            <details class="qa"><summary>هل يمكنني اقتراح تحسين أو الإبلاغ عن خلل؟<span class="tg" data-icon="plus" data-size="15"></span></summary>
+              <div class="ans">بكلّ ترحيب. راسل <a href="mailto:amahanamine0@gmail.com" style="color:var(--brand);font-weight:700">amahanamine0@gmail.com</a>
+                مع اسم التطبيق ووصف ما توقّعته وما حدث فعلًا — وأرفق لقطة شاشة إن أمكن.</div></details>
+          </div>
+        </section>
+
+        <!-- ٨ -->
+        <section id="library" class="rv">
+          <h2>٨. مكتبة الأدلة الكاملة</h2>
+          <h3>أدلّة عامّة</h3>
+          <div class="lib" id="libGeneral"></div>
+          <h3 style="margin-block-start:32px">أدلّة التطبيقات</h3>
+          <p>خمسة عشر تطبيقًا لها دليل PDF مستقلّ بالصور والخطوات.</p>
+          <div class="lib" id="libApps"></div>
+        </section>
+
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-block-start:0">
+    <div class="wrap">
+      <div class="cta-band rv">
+        <h2>قرأت الدليل — تبقّى أن تطلب نسختك</h2>
+        <p>راسلني بسطرين، فيصلك الملف وتطبّق الخطوة الأولى اليوم.</p>
+        <div class="hero-cta">
+          <a class="btn btn-main" data-request href="mailto:amahanamine0@gmail.com">
+            <span data-icon="mailat" data-size="20"></span> اطلب نسخة من المنصّة</a>
+          <a class="btn btn-ghost" href="videos.html">شاهد الشرح المصوَّر</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const mk = (href, dl, t, s) => {
+    const a = document.createElement('a');
+    a.className = 'lib-item'; a.href = href; a.setAttribute('download', dl);
+    a.innerHTML = `<span class="fic">PDF</span><span><b>${t}</b><small>${s}</small></span>`;
+    return a;
+  };
+  const g = document.getElementById('libGeneral');
+  LIBRARY.forEach(x => g.appendChild(mk(P.guide(x.f), x.name, x.t, x.d + ' · ' + x.s)));
+
+  const ap = document.getElementById('libApps');
+  APPS.filter(a => a.guide).forEach(a => {
+    const ax = AX(a.ax);
+    const n = mk(P.guide(a.guide), `دليل ${a.t}.pdf`, a.t, ax.n);
+    n.style.borderInlineStartWidth = '4px';
+    n.style.borderInlineStartColor = ax.c;
+    ap.appendChild(n);
+  });
+
+  // إبراز القسم الجاري في الفهرس
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-15% 0px -70%' });
+  secs.forEach(s => io.observe(s));
+
+  document.querySelectorAll('.qa').forEach(d =>
+    d.addEventListener('toggle', () => d.classList.toggle('open', d.open)));
+});
+</script>
+</body>
+</html>

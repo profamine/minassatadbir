@@ -1,0 +1,27 @@
+# ═══ الفيديوهات ═══
+# لا تُرفع إلى GitHub: حدّ الملف الواحد 100 مب، و platform-full.mp4 وحده 227 مب
+# (سيُرفض الدفع كاملًا لو أُدرج). مكانها يوتيوب — انظر README.md
+videos/
+
+# ═══ مخرجات البناء ═══
+# يولّدها build-deploy.py محليًّا عند النشر على استضافة بالسحب والإفلات
+dist/
+dist.zip
+
+# ═══ إعدادات محلّية ═══
+.claude/
+.vercel/
+
+# ═══ نظام التشغيل والمحرّرات ═══
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+__pycache__/
+
+# ملاحظات محلّية (روابط النشر ونحوها)
+httpscelebrated-sherbet-9116aa.netl.txt
+*.netl.txt
+
+# ملف التطبيق نفسه لا يُنشر — يُوزَّع بالطلب عبر البريد
+downloads/unified-platform.html

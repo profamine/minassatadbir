@@ -1,0 +1,30 @@
+# ترويسات HTTP — تقرأها Cloudflare Pages و Netlify تلقائيًّا
+# (GitHub Pages تتجاهل هذا الملف، ولا ضرر في وجوده)
+#
+# ملاحظة عن التخزين المؤقّت: أسماء ملفاتنا ثابتة ولا تحمل بصمة تغيّر،
+# لذلك المدد قصيرة عمدًا. لو خزّنّا JS و CSS سنةً كاملة، لظلّ الزوّار
+# يرون النسخة القديمة بعد كل تحديث — وهذا أسوأ من بضع كيلوبايتات إضافية.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# الصور لا تتغيّر أبدًا — خزّنها شهرًا
+/assets/img/*
+  Cache-Control: public, max-age=2592000
+
+# الشفرة قد تتغيّر (روابط يوتيوب مثلًا) — ساعة واحدة
+/assets/css/*
+  Cache-Control: public, max-age=3600
+/assets/js/*
+  Cache-Control: public, max-age=3600
+
+# ملف المنصّة والأدلة — يوم واحد
+/downloads/*
+  Cache-Control: public, max-age=86400
+
+# الصفحات نفسها: تحقّق من التحديث في كل زيارة
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

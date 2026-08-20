@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>التطبيقات التسعة عشر — المنصّة الموحّدة للتدبير المدرسي</title>
+<meta name="description" content="استعرض 19 تطبيقًا للتدبير المدرسي موزّعة على ستة محاور، مع لقطات حقيقية وأدلة استعمال وفيديوهات توضيحية.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f6ef7'/%3E%3Cpath d='m12 5 7 3.6-7 3.6-7-3.6z' fill='%23fff'/%3E%3Cpath d='m5 12.4 7 3.6 7-3.6' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="apps">
+
+<main id="main">
+  <section style="padding-block-end:0">
+    <div class="wrap">
+      <div class="sec-head rv" style="margin-block-end:30px">
+        <span class="sec-tag">الكتالوج</span>
+        <h1>تسعة عشر تطبيقًا لتدبير المؤسسة</h1>
+        <p>انقر أيّ تطبيق لتفتح بطاقته: لقطة الشاشة، دليل الاستعمال، الفيديو التوضيحي، والتطبيقات القريبة منه.
+          <br>يعرض الآن <b id="appCount">19</b> تطبيقًا.</p>
+      </div>
+
+      <div class="explorer-bar rv">
+        <button class="chip on" data-ax="all">الكل</button>
+        <button class="chip" data-ax="schooling" style="--c:var(--a1);--c2:var(--a1b)"><i></i>التمدرس والتلاميذ</button>
+        <button class="chip" data-ax="assess"    style="--c:var(--a2);--c2:var(--a2b)"><i></i>التقويم والدعم</button>
+        <button class="chip" data-ax="staff"     style="--c:var(--a3);--c2:var(--a3b)"><i></i>الأطر والإدارة</button>
+        <button class="chip" data-ax="mail"      style="--c:var(--a4);--c2:var(--a4b)"><i></i>المراسلات والوثائق</button>
+        <button class="chip" data-ax="finance"   style="--c:var(--a5);--c2:var(--a5b)"><i></i>المالية والمادية</button>
+        <button class="chip" data-ax="lead"      style="--c:var(--a6);--c2:var(--a6b)"><i></i>القيادة والتخطيط</button>
+        <label class="search">
+          <span class="sr-only" hidden>بحث</span>
+          <input id="appSearch" type="search" placeholder="ابحث عن تطبيق…" autocomplete="off">
+          <span data-icon="search" data-size="17"></span>
+        </label>
+      </div>
+
+      <div class="cards g3" id="appGrid"></div>
+
+      <p style="text-align:center;color:var(--txt3);font-size:14px;margin-block-start:26px">
+        نصيحة: اضغط <kbd>Ctrl</kbd> + <kbd>K</kbd> في أي صفحة للبحث السريع في التطبيقات والفيديوهات والأدلة.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band rv">
+        <h2>كلّ هذه التطبيقات… في ملفٍ واحد</h2>
+        <p>لست مضطرًّا لاختيار واحد. نسخة واحدة من المنصّة تضع بين يديك التسعة عشر جميعها.</p>
+        <div class="hero-cta">
+                    <a class="btn btn-main" data-request href="mailto:amahanamine0@gmail.com">
+            <span data-icon="mailat" data-size="20"></span> اطلب نسخة من المنصّة</a>
+          <a class="btn btn-ghost" href="videos.html">الفيديوهات التوضيحية</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الفيديوهات التوضيحية — المنصّة الموحّدة للتدبير المدرسي</title>
+<meta name="description" content="جولة كاملة مصوَّرة في المنصّة الموحّدة، وستّ جولات قصيرة لأهم التطبيقات: مرصاد التقويم، الدعم الممتد، شواهد العمل، ترتيب الأساتذة وتوزيع الحصص.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f6ef7'/%3E%3Cpath d='m12 5 7 3.6-7 3.6-7-3.6z' fill='%23fff'/%3E%3Cpath d='m5 12.4 7 3.6 7-3.6' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="videos">
+
+<main id="main">
+  <section style="padding-block-end:0">
+    <div class="wrap">
+      <div class="sec-head rv" style="margin-block-end:34px">
+        <span class="sec-tag">الفيديوهات</span>
+        <h1>شاهد المنصّة وهي تشتغل</h1>
+        <p>ساعة وربع من الشرح الكامل، وستّ جولات قصيرة لكلّ تطبيق على حدة.
+          يتذكّر الموقع أين توقّفت في الجولة الطويلة ليعرض عليك المتابعة من النقطة نفسها.</p>
+      </div>
+
+      <div class="feature-video">
+        <div>
+          <div class="player" id="vStage">
+            <video id="vPlayer" controls preload="metadata" playsinline
+              controlslist="nodownload" title="فيديو توضيحي"></video>
+            <div class="embed-slot" id="vEmbed"><!-- يُملأ بإطار يوتيوب عند التشغيل --></div>
+            <button class="player-poster" id="vPoster" aria-label="تشغيل الفيديو"></button>
+            <span class="play-btn" data-icon="play" data-size="30" aria-hidden="true"></span>
+            <div class="player-cap"><h3 id="vTitle">…</h3><p id="vDesc">…</p></div>
+            <div class="resume-tip" id="vResume">
+              <span>توقّفت عند <b id="vResumeTime">0:00</b></span>
+              <button id="vResumeGo">تابع من هنا ↩</button>
+            </div>
+          </div>
+          <p style="color:var(--txt3);font-size:13.5px;margin-block-start:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span data-icon="bolt" data-size="15"></span>
+            نصيحة: استعمل <kbd>مسافة</kbd> للتشغيل والإيقاف، و<kbd>←</kbd> <kbd>→</kbd> للتنقّل،
+            وأزرار المشغّل لتسريع العرض إلى ×1.5 إن كان الشرح بطيئًا عليك.
+          </p>
+        </div>
+        <div>
+          <h3 style="font-size:16px;color:var(--txt3);margin-block-end:14px">قائمة التشغيل — 7 فيديوهات</h3>
+          <div class="vlist" id="vList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="sec-tag">جولات قصيرة</span>
+        <h2>كلّ تطبيق في أقل من ثلاث دقائق</h2>
+        <p>مدخل سريع لكلّ تطبيق: من أين تبدأ، وماذا ستحصل عليه في النهاية.</p>
+      </div>
+      <div class="cards g3" id="vGrid"></div>
+    </div>
+  </section>
+
+  <section style="background:var(--surf2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="sec-tag">تُفضّل القراءة؟</span>
+        <h2>لكلّ فيديو دليلٌ مكتوب يقابله</h2>
+        <p>الأدلة بصيغة PDF قابلة للطبع والتوزيع على أعضاء الفريق التربوي.</p>
+      </div>
+      <div class="lib rv" id="libGrid"></div>
+    </div>
+  </section>
+
+  <section style="padding-block-start:0">
+    <div class="wrap">
+      <div class="cta-band rv">
+        <h2>جرّبها بنفسك</h2>
+        <p>بعد المشاهدة، اطلب نسختك، وستجد الواجهة نفسها التي رأيتها في الفيديو.</p>
+        <div class="hero-cta">
+                    <a class="btn btn-main" data-request href="mailto:amahanamine0@gmail.com">
+            <span data-icon="mailat" data-size="20"></span> اطلب نسخة من المنصّة</a>
+          <a class="btn btn-ghost" href="guide.html">دليل الاستعمال</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const lib = document.getElementById('libGrid');
+  LIBRARY.forEach(g => {
+    const a = document.createElement('a');
+    a.className = 'lib-item'; a.href = P.guide(g.f); a.setAttribute('download', g.name);
+    a.innerHTML = `<span class="fic">PDF</span><span><b>${g.t}</b><small>${g.d} · ${g.s}</small></span>`;
+    lib.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>

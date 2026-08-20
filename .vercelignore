@@ -1,0 +1,15 @@
+# ملفات تخصّ المستودع لا النشر — لا داعي لرفعها إلى فيرسل
+README.md
+build-deploy.py
+.gitattributes
+
+# ترويسات كلاودفلير/نيتليفاي — فيرسل يقرأ vercel.json بدلها
+_headers
+
+# مخرجات بناء محلّية
+dist/
+dist.zip
+videos/
+
+# ملف التطبيق لا يُنشر على الموقع
+downloads/unified-platform.html

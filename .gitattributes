@@ -1,0 +1,9 @@
+# توحيد نهايات الأسطر: LF في المستودع مهما كان نظام المحرِّر
+* text=auto eol=lf
+
+# ملفات ثنائية — لا يمسّها git بالتحويل
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.mp4   binary
