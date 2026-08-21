@@ -116,7 +116,7 @@ const APPS = [
 const VIDEOS = [
   {
     id: 'platform-full',
-    yt: '',
+    yt: 'https://www.youtube.com/watch?v=IpUwWLhKVbw&list=PLXLNCsFCVkMs',
     app: null,
     t: 'الجولة الكاملة في المنصّة الموحّدة',
     d: 'عرض شامل للمنصّة من التثبيت إلى الاستعمال اليومي، تطبيقًا تطبيقًا.',
@@ -286,7 +286,7 @@ const VIDEOS = [
 
   {
     id: 'projet',
-    yt: '',
+    yt: 'https://www.youtube.com/watch?v=32iumNclrJI',
     app: 'mashrou',
     t: 'مِرآة — مشروع المؤسسة المندمج',
     d: 'إعداد مشروع المؤسسة المندمج ومؤشراته وبطاقات الأنشطة وتتبع إنجازها.',
@@ -298,7 +298,7 @@ const VIDEOS = [
 
   {
     id: 'tableau-reference',
-    yt: 'https://www.youtube.com/watch?v=32iumNclrJI',
+    yt: 'https://www.youtube.com/watch?v=6KCRxW-6TP8',
     app: 'sabora',
     t: 'السبورة المرجعية',
     d: 'تدبير السبورة المرجعية وتنظيم المعطيات الأساسية للمؤسسة.',
