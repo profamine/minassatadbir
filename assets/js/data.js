@@ -119,7 +119,7 @@ const APPS = [
 const VIDEOS = [
   {
     id: 'platform-full',
-    yt: '',
+    yt: 'https://www.youtube.com/watch?v=IpUwWLhKVbw&list=PLXLNCsFCVkMs',
     app: null,
     t: 'الجولة الكاملة في المنصّة الموحّدة',
     d: 'عرض شامل للمنصّة من التثبيت إلى الاستعمال اليومي، تطبيقًا تطبيقًا.',
