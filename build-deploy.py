@@ -12,7 +12,7 @@
 ينبّه: إن بقيت فيديوهات بلا رابط يوتيوب في assets/js/data.js.
 """
 
-import argparse, fnmatch, re, shutil, sys
+import argparse, fnmatch, json, shutil, subprocess, sys
 from datetime import date
 from pathlib import Path
 
@@ -34,11 +34,62 @@ def human(n):
     return f'{n:.1f} تب'
 
 
-def pending_videos():
-    """يعيد معرّفات الفيديوهات التي لم يُملأ حقل yt الخاص بها بعد."""
-    src = (ROOT / 'assets' / 'js' / 'data.js').read_text(encoding='utf-8')
-    body = src[src.index('const VIDEOS'):src.index('function ytId')]
-    return [vid for vid, yt in re.findall(r"id:'([\w-]+)',\s*yt:'([^']*)'", body) if not yt.strip()]
+# يُقيَّم data.js فعليًّا بدل مطابقته بتعبير نمطي: التعبير النمطي ينكسر صامتًا
+# عند أي تغيير في التنسيق (مسافة بعد النقطتين مثلًا) فيعطي «كل شيء سليم» كذبًا.
+CHECK_JS = r"""
+const fs = require('fs'), vm = require('vm');
+const src = fs.readFileSync('assets/js/data.js', 'utf8') + `
+;globalThis.__D={AXES,APPS,VIDEOS,LIBRARY,ytId};`;
+const ctx = { console }; vm.createContext(ctx); vm.runInContext(src, ctx);
+const { AXES, APPS, VIDEOS, LIBRARY, ytId } = ctx.__D;
+const axIds = new Set(AXES.map(a => a.id));
+const appIds = new Set(APPS.map(a => a.id));
+const vidIds = new Set(VIDEOS.map(v => v.id));
+const seen = new Set(), dupIds = [], seenYt = new Map(), dupYt = [];
+for (const v of VIDEOS) {
+  if (seen.has(v.id)) dupIds.push(v.id); else seen.add(v.id);
+  const y = ytId(v);
+  if (y) { if (seenYt.has(y)) dupYt.push(seenYt.get(y) + ' + ' + v.id); else seenYt.set(y, v.id); }
+}
+process.stdout.write(JSON.stringify({
+  videos: VIDEOS.length, apps: APPS.length,
+  pending: VIDEOS.filter(v => !ytId(v)).map(v => v.id),
+  dupIds, dupYt,
+  badApp: VIDEOS.filter(v => v.app !== null && !appIds.has(v.app)).map(v => v.id + " -> app:'" + v.app + "'"),
+  badAx:  VIDEOS.filter(v => !axIds.has(v.ax)).map(v => v.id + " -> ax:'" + v.ax + "'"),
+  badAppVideo: APPS.filter(a => a.video && !vidIds.has(a.video)).map(a => a.id + " -> video:'" + a.video + "'"),
+  guides: [...new Set(APPS.filter(a => a.guide).map(a => a.guide).concat(LIBRARY.map(g => g.f)))],
+  images: [...new Set(APPS.map(a => a.img).concat(VIDEOS.map(v => v.img)))]
+}));
+"""
+
+
+def data_report():
+    """يقيّم assets/js/data.js عبر node ويعيد تقرير تماسكه، أو None إن تعذّر."""
+    try:
+        out = subprocess.run(['node', '-e', CHECK_JS], cwd=ROOT,
+                             capture_output=True, text=True, encoding='utf-8')
+    except FileNotFoundError:
+        print('node غير مثبّت — تُخطّى فحوص تماسك data.js')
+        return None
+    if out.returncode != 0:
+        print('تعذّر قراءة data.js:')
+        print((out.stderr or '').strip()[:600])
+        return None
+    return json.loads(out.stdout)
+
+
+def missing_assets(rep):
+    """يتحقّق أنّ كل دليل ولقطة مشار إليهما في data.js موجودان فعلًا في dist."""
+    miss = []
+    for g in rep['guides']:
+        if not (DIST / 'downloads' / 'guides' / (g + '.pdf')).exists():
+            miss.append('downloads/guides/' + g + '.pdf')
+    for i in rep['images']:
+        name = 'cover.jpeg' if i == 'cover' else i + '.png'
+        if not (DIST / 'assets' / 'img' / name).exists():
+            miss.append('assets/img/' + name)
+    return miss
 
 
 def copy_site():
@@ -102,13 +153,40 @@ def main():
     if biggest[0] > 25 * 1024 * 1024:
         print(f'\n⛔ «{biggest[1]}» يتجاوز 25 مب — سترفضه Cloudflare Pages.')
 
-    left = pending_videos()
-    if left:
-        print(f'\n⚠️  {len(left)} فيديو بلا رابط يوتيوب: {"، ".join(left)}')
+    rep = data_report()
+    if rep is None:
+        return 1
+
+    print()
+    print('[data.js] {} تطبيقًا · {} فيديو'.format(rep['apps'], rep['videos']))
+    problems = 0
+    for label, items in (
+        ('معرّفات فيديو مكرّرة',            rep['dupIds']),
+        ('رابط يوتيوب مستعمل مرّتين',       rep['dupYt']),
+        ('حقل app لا يطابق أي تطبيق',       rep['badApp']),
+        ('حقل ax لا يطابق أي محور',         rep['badAx']),
+        ('APPS.video يشير إلى فيديو مفقود', rep['badAppVideo']),
+        ('ملفات مشار إليها وغير موجودة',    missing_assets(rep)),
+    ):
+        if items:
+            problems += len(items)
+            print()
+            print('[خطأ] {} ({}):'.format(label, len(items)))
+            for it in items:
+                print('   - ' + it)
+
+    if rep['pending']:
+        problems += len(rep['pending'])
+        print()
+        print('[تنبيه] {} فيديو بلا رابط يوتيوب: {}'.format(
+            len(rep['pending']), '، '.join(rep['pending'])))
         print('   مجلّد videos/ غير مرفوع، فلن تشتغل هذه الفيديوهات على الإنترنت.')
         print('   املأ الحقل yt لكلٍّ منها في assets/js/data.js ثم أعد تشغيل هذا السكربت.')
+
+    if problems:
         return 1
-    print('\n✔ كل الفيديوهات مربوطة بيوتيوب.')
+    print()
+    print('[سليم] data.js متماسك، وكل الفيديوهات مربوطة بيوتيوب.')
     return 0
 
 

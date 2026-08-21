@@ -151,6 +151,8 @@ function initReveal() {
 
 /* ─────────── عدّاد الأرقام ─────────── */
 function initCounters() {
+  const sv = $('#statVideos');
+  if (sv) sv.dataset.count = VIDEOS.length;   // العدّاد يتبع السجلّ
   const nums = $$('[data-count]');
   if (!nums.length) return;
   const run = n => {
@@ -411,6 +413,8 @@ function loadYTApi() {
 
 function initVideos() {
   const stage = $('#vStage'); if (!stage) return;
+  /* العدد مشتقّ من السجلّ لا مكتوب في HTML، فلا يتخلّف عند إضافة فيديو */
+  const cnt = $('#vCount'); if (cnt) cnt.textContent = VIDEOS.length;
   const list = $('#vList'), embed = $('#vEmbed');
   const video = $('#vPlayer'), poster = $('#vPoster'), title = $('#vTitle'), desc = $('#vDesc');
   const resume = $('#vResume');
