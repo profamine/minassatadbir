@@ -622,6 +622,7 @@ function initAppMeta() {
   set('#mSize, #mSize2, .js-size', APP_SIZE);
   set('#mSetup, .js-setup', APP_SETUP);
   set('.js-datadir', APP_DATA_DIR);
+  set('.js-sha', APP_SHA256);
   $$('#dlBtn, .js-dl').forEach(a => { a.href = APP_DOWNLOAD; });
   $$('.js-releases').forEach(a => { a.href = APP_RELEASES; });
 }

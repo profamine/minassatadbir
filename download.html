@@ -113,12 +113,41 @@
         <div style="display:flex;gap:14px;padding:20px 22px;border-radius:var(--r-s);background:var(--surf);
                     border:1px solid var(--line);border-inline-start:4px solid var(--a6)">
           <span style="color:var(--a6);flex:none;margin-block-start:3px" data-icon="shield" data-size="22"></span>
-          <div><b style="display:block;margin-block-end:6px">إن ظهرت شاشة زرقاء تقول «Windows protected your PC»</b>
-            <p style="color:var(--txt2);font-size:14.8px;margin:0">هذا تحذير ويندوز
-              <span dir="ltr">SmartScreen</span> المعتاد مع أي برنامج جديد قليل الانتشار،
-              وليس دليلًا على وجود فيروس. اضغط
-              <b>«More info» ← «Run anyway»</b> (أو «مزيد من المعلومات» ← «تشغيل على أي حال»).
-              يختفي هذا التحذير تلقائيًّا كلّما ازداد عدد من نزّلوا التطبيق.</p></div>
+          <div><b style="display:block;margin-block-end:10px">سيعترضك تحذيران — كلاهما طبيعي</b>
+            <p style="color:var(--txt2);font-size:14.8px;margin:0 0 12px">
+              التطبيق مجّاني وحديث العهد، ولم يُشترَ له بعدُ «توقيع رقمي» تجاري.
+              لذلك يعامله ويندوز معاملة كل برنامج جديد قليل الانتشار. هذا
+              <b>ليس دليلًا على فيروس</b> — إليك ما ستراه بالضبط وما تفعله:</p>
+
+            <div style="display:grid;gap:10px">
+              <div style="padding:12px 15px;border-radius:10px;background:var(--surf2);border:1px solid var(--line)">
+                <b style="font-size:14px">١ — عند انتهاء التنزيل (في المتصفّح)</b>
+                <p style="color:var(--txt3);font-size:13.5px;margin:6px 0" dir="ltr">
+                  «… n’est pas fréquemment téléchargé» / «… isn’t commonly downloaded»</p>
+                <p style="color:var(--txt2);font-size:14.2px;margin:0">
+                  انقر السهم بجانب الملف في شريط التنزيلات ← <b>«Conserver» / «Keep»</b>.</p>
+              </div>
+              <div style="padding:12px 15px;border-radius:10px;background:var(--surf2);border:1px solid var(--line)">
+                <b style="font-size:14px">٢ — عند تشغيل المثبِّت (شاشة زرقاء)</b>
+                <p style="color:var(--txt3);font-size:13.5px;margin:6px 0" dir="ltr">
+                  «Windows a protégé votre ordinateur» / «Windows protected your PC»</p>
+                <p style="color:var(--txt2);font-size:14.2px;margin:0">
+                  اضغط <b>«Informations complémentaires» / «More info»</b> ثم
+                  <b>«Exécuter quand même» / «Run anyway»</b>.</p>
+              </div>
+            </div>
+
+            <p style="color:var(--txt2);font-size:14.5px;margin-block-start:14px">
+              وإن أردت التأكّد بنفسك، تحقّق من بصمة الملف قبل تشغيله:</p>
+            <p style="margin:8px 0 0">
+              <code class="path" style="display:block;direction:ltr;text-align:left;padding:9px 12px;
+                font-size:12.5px;word-break:break-all">Get-FileHash .\MansatTadbir_2.2.1_x64-setup.exe -Algorithm SHA256</code>
+            </p>
+            <p style="color:var(--txt3);font-size:12.5px;margin-block-start:8px">
+              يجب أن تُطابق النتيجةُ هذه البصمة تمامًا:<br>
+              <code class="path js-sha" style="direction:ltr;display:inline-block;margin-block-start:5px;
+                font-size:11.5px;word-break:break-all">…</code>
+            </p></div>
         </div>
       </div>
     </div>

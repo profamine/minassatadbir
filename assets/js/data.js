@@ -394,6 +394,9 @@ const APP_VERSION  = '2.2.1';
 const APP_SIZE     = '3.3 ميغابايت';
 const APP_REPO     = 'https://github.com/profamine/minsassatatadibiralmadrassi';
 const APP_SETUP    = `MansatTadbir_${APP_VERSION}_x64-setup.exe`;
+/* بصمة المثبِّت — تُحدَّث مع كل إصدار. تُستخرج بـ:
+   Get-FileHash .\MansatTadbir_X.Y.Z_x64-setup.exe -Algorithm SHA256   */
+const APP_SHA256   = '6ce9d8d2eb0715b3581de0f18553762622aedfb2f7b73e5955e763190a588368';
 const APP_DOWNLOAD = `${APP_REPO}/releases/download/v${APP_VERSION}/${APP_SETUP}`;
 const APP_RELEASES = `${APP_REPO}/releases/latest`;   // صفحة كل الإصدارات
 /* الخطّ المائل العكسي مُضاعَف: نصّ عادي لا String.raw، لأن القالب الخام
