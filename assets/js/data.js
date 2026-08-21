@@ -48,6 +48,9 @@ const ICONS = {
   star:'<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/>',
   layers:'<path d="m12 3 9 4.6-9 4.6-9-4.6z"/><path d="m3 12.4 9 4.6 9-4.6"/><path d="m3 16.9 9 4.6 9-4.6"/>',
   print:'<path d="M6.4 9V3.6h11.2V9"/><rect x="3.4" y="9" width="17.2" height="7.6" rx="2"/><path d="M6.4 14h11.2v6.4H6.4z"/>',
+  reload:'<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4.6h-4.6"/>',
+  pop:'<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5.4H4.6V6H10"/>',
+  win:'<path d="M3.6 6.2 10.4 5.2v6.2H3.6z"/><path d="M12 5 20.4 3.8v7.6H12z"/><path d="M3.6 12.6h6.8v6.2L3.6 17.8z"/><path d="M12 12.6h8.4v7.6L12 19z"/>',
   mailat:'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a2.6 2.6 0 0 0 5.2 0V12a9.2 9.2 0 1 0-3.6 7.3"/>'
 };
 
@@ -116,7 +119,7 @@ const APPS = [
 const VIDEOS = [
   {
     id: 'platform-full',
-    yt: 'https://www.youtube.com/watch?v=IpUwWLhKVbw&list=PLXLNCsFCVkMs',
+    yt: '',
     app: null,
     t: 'الجولة الكاملة في المنصّة الموحّدة',
     d: 'عرض شامل للمنصّة من التثبيت إلى الاستعمال اليومي، تطبيقًا تطبيقًا.',
@@ -352,6 +355,27 @@ const imgOf = id => id === 'cover' ? P.cover : P.img(id);
 const AX  = id => AXES.find(a => a.id === id) || AXES[0];
 const APP = id => APPS.find(a => a.id === id);
 const VID = id => VIDEOS.find(v => v.id === id);
+
+/* ═══════════════════════════════════════════════════════════
+   التطبيق — الإصدار والتنزيل
+   ───────────────────────────────────────────────────────────
+   المنصّة تطبيق سطح مكتب لويندوز (Tauri/NSIS) يُنزَّل من صفحة
+   الإصدارات على GitHub. عند كل إصدار جديد: حدِّث APP_VERSION
+   و APP_SIZE هنا فقط — بقية الصفحات تقرأ منهما.
+
+   الزرّ يقصد صفحة /releases/latest لا رابط الملف المباشر عمدًا:
+   اسم الملف يحمل رقم الإصدار، فأي رابط مباشر يصير 404 عند أوّل
+   تحديث. صفحة الإصدارات لا تنكسر أبدًا.
+   ═══════════════════════════════════════════════════════════ */
+const APP_NAME     = 'منصة التدبير المدرسي';
+const APP_VERSION  = '2.2.1';
+const APP_SIZE     = '3.3 ميغابايت';
+const APP_REPO     = 'https://github.com/profamine/minsassatatadibiralmadrassi';
+const APP_RELEASES = `${APP_REPO}/releases/latest`;
+const APP_SETUP    = `MansatTadbir_${APP_VERSION}_x64-setup.exe`;
+/* الخطّ المائل العكسي مُضاعَف: نصّ عادي لا String.raw، لأن القالب الخام
+   لا يصحّ أن ينتهي بخطّ مائل (يهرب من علامة الإغلاق فيبتلع ما بعده). */
+const APP_DATA_DIR = '%APPDATA%\\ma.tadbir.mansat\\';
 
 /* ═══════════════════════════════════════════════════════════
    استمارة الطلب — استمارة جوجل مضمَّنة

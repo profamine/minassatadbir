@@ -53,7 +53,7 @@ const NAV = [
   { href: 'apps.html',     t: 'التطبيقات',  k: 'apps' },
   { href: 'videos.html',   t: 'الفيديوهات', k: 'videos' },
   { href: 'guide.html',    t: 'دليل الاستعمال', k: 'guide' },
-  { href: 'download.html', t: 'اطلب المنصّة', k: 'download' }
+  { href: 'download.html', t: 'التحميل', k: 'download' }
 ];
 
 function buildChrome() {
@@ -68,12 +68,12 @@ function buildChrome() {
     </a>
     <nav class="nav-links" id="navLinks">
       ${NAV.map(n => `<a href="${n.href}" class="${n.k === PAGE ? 'on' : ''}">${n.t}</a>`).join('')}
-      <a class="nav-cta" href="download.html">اطلب نسخة</a>
+      <a class="nav-cta" href="download.html">نزّل التطبيق</a>
     </nav>
     <div class="nav-tools">
       <button class="icon-btn js-cmdk" aria-label="بحث سريع (Ctrl+K)" title="بحث سريع — Ctrl + K">${icon('search', 19)}</button>
       <button class="icon-btn js-theme" aria-label="تبديل السمة"></button>
-      <a class="nav-cta" href="download.html">اطلب نسخة</a>
+      <a class="nav-cta" href="download.html">نزّل التطبيق</a>
       <button class="icon-btn burger js-burger" aria-label="القائمة" aria-expanded="false">${icon('menu', 20)}</button>
     </div>
   </div>`;
@@ -85,7 +85,7 @@ function buildChrome() {
       <div>
         <a class="brand" href="index.html"><span class="mark">${icon('layers', 21)}</span>
           <span>المنصّة الموحّدة<small>للتدبير المدرسي</small></span></a>
-        <p>تسعة عشر تطبيقًا لتدبير المؤسسة التعليمية، في ملفٍ واحد يعمل دون إنترنت ودون تثبيت، وتبقى معطياتك داخل حاسوبك.</p>
+        <p>تسعة عشر تطبيقًا لتدبير المؤسسة التعليمية، في تطبيق ويندوز واحد يعمل كاملًا بدون إنترنت، وتبقى معطياتك داخل حاسوبك.</p>
         <div class="author">
           <span class="av">أ‌أ</span>
           <span><b>أمين أمهان</b><small>متصرّف تربوي — مديرية الحوز</small>
@@ -303,9 +303,9 @@ function openDrawer(id) {
       <img class="shot" src="${imgOf(a.img)}" alt="لقطة من تطبيق ${a.t}">
       <h4>ما الذي يمكنك فعله الآن؟</h4>
       <div class="d-actions">
-        <a class="d-act" href="download.html#request">
-          <span class="ic" style="background:linear-gradient(135deg,var(--a3),var(--a4))">${icon('mailat', 19)}</span>
-          <span><b>اطلب نسخة من المنصّة</b><small>ملف واحد يضمّ هذا التطبيق و18 غيره</small></span>
+        <a class="d-act" href="download.html">
+          <span class="ic" style="background:linear-gradient(135deg,var(--a3),var(--a4))">${icon('dl', 19)}</span>
+          <span><b>نزّل المنصّة</b><small>تطبيق ويندوز واحد يضمّ هذا التطبيق و18 غيره</small></span>
           <span class="arw">${icon('arrow', 18)}</span></a>
         ${a.guide ? `<a class="d-act" href="${P.guide(a.guide)}" download="دليل ${a.t}.pdf">
           <span class="ic" style="background:linear-gradient(135deg,#f87171,#dc2626)">${icon('pdf', 19)}</span>
@@ -565,7 +565,7 @@ function initCmdK() {
     ...APPS.map(a => { const ax = AX(a.ax); return { t: a.t, s: ax.n, href: `apps.html#${a.id}`, ic: a.ic, c: ax.c, c2: ax.c2 }; }),
     ...VIDEOS.map(v => ({ t: 'فيديو: ' + v.t, s: v.dur + ' دقيقة', href: `videos.html?v=${v.id}`, ic: 'play', c: 'var(--a2)', c2: 'var(--a2b)' })),
     ...LIBRARY.map(g => ({ t: 'دليل: ' + g.t, s: 'PDF · ' + g.s, href: P.guide(g.f), dl: g.name, ic: 'pdf', c: 'var(--a5)', c2: 'var(--a5b)' })),
-    { t: 'اطلب نسخة من المنصّة', s: 'استمارة قصيرة', href: 'download.html#request', ic: 'mailat', c: 'var(--a1)', c2: 'var(--a1b)' }
+    { t: 'نزّل منصة التدبير المدرسي', s: 'تطبيق ويندوز', href: 'download.html', ic: 'dl', c: 'var(--a1)', c2: 'var(--a1b)' }
   ];
   pool.forEach(p => p.k = norm(p.t + ' ' + p.s));
 
@@ -605,6 +605,18 @@ function initCmdK() {
   });
 }
 
+/* ─────────── معطيات الإصدار في الصفحات ─────────── */
+/* رقم الإصدار والحجم واسم الملف تُكتب من data.js لا في HTML،
+   فتحديث إصدار جديد يمسّ ثابتًا واحدًا لا خمس صفحات. */
+function initAppMeta() {
+  const set = (sel, val) => $$(sel).forEach(n => { n.textContent = val; });
+  set('#mVersion, .js-version', APP_VERSION);
+  set('#mSize, #mSize2, .js-size', APP_SIZE);
+  set('#mSetup, .js-setup', APP_SETUP);
+  set('.js-datadir', APP_DATA_DIR);
+  $$('#dlBtn, .js-dl').forEach(a => { a.href = APP_RELEASES; });
+}
+
 /* ─────────── تضمين استمارة جوجل ─────────── */
 /* المصادر تُحقن من جافاسكريبت لا في HTML: الإطار لا يُحمَّل إلا في صفحة
    الطلب، ورابط الاستمارة يبقى في data.js وحده لتغييره من مكان واحد. */
@@ -623,12 +635,7 @@ function initIcons() {
 }
 
 /* ─────────── أزرار طلب نسخة ─────────── */
-/* كلّها تقود إلى استمارة صفحة الطلب. */
-function initRequest() {
-  $$('a[data-request]').forEach(a => {
-    a.href = PAGE === 'download' ? '#request' : 'download.html#request';
-  });
-}
+
 
 /* ─────────── تأكيد التحميل ─────────── */
 function initDownloads() {
@@ -648,7 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideos();
   initCmdK();
   initCounters();
-  initRequest();
+  initAppMeta();
   initGForm();
   initDownloads();
   initReveal();
