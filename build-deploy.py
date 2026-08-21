@@ -39,21 +39,25 @@ def human(n):
 CHECK_JS = r"""
 const fs = require('fs'), vm = require('vm');
 const src = fs.readFileSync('assets/js/data.js', 'utf8') + `
-;globalThis.__D={AXES,APPS,VIDEOS,LIBRARY,ytId};`;
+;globalThis.__D={AXES,APPS,VIDEOS,LIBRARY,ytId,ytSrc};`;
 const ctx = { console }; vm.createContext(ctx); vm.runInContext(src, ctx);
-const { AXES, APPS, VIDEOS, LIBRARY, ytId } = ctx.__D;
+const { AXES, APPS, VIDEOS, LIBRARY, ytId, ytSrc } = ctx.__D;
 const axIds = new Set(AXES.map(a => a.id));
 const appIds = new Set(APPS.map(a => a.id));
 const vidIds = new Set(VIDEOS.map(v => v.id));
 const seen = new Set(), dupIds = [], seenYt = new Map(), dupYt = [];
 for (const v of VIDEOS) {
   if (seen.has(v.id)) dupIds.push(v.id); else seen.add(v.id);
-  const y = ytId(v);
-  if (y) { if (seenYt.has(y)) dupYt.push(seenYt.get(y) + ' + ' + v.id); else seenYt.set(y, v.id); }
+  const s = ytSrc(v);
+  // القائمة تحوي فيديوهات الموقع نفسها بالضرورة، فلا يُحسب ذلك تكرارًا
+  if (s.kind === 'video') {
+    if (seenYt.has(s.id)) dupYt.push(seenYt.get(s.id) + ' + ' + v.id); else seenYt.set(s.id, v.id);
+  }
 }
 process.stdout.write(JSON.stringify({
   videos: VIDEOS.length, apps: APPS.length,
-  pending: VIDEOS.filter(v => !ytId(v)).map(v => v.id),
+  pending: VIDEOS.filter(v => !ytSrc(v).kind).map(v => v.id),
+  playlists: VIDEOS.filter(v => ytSrc(v).kind === 'playlist').map(v => v.id + ' -> ' + ytSrc(v).id),
   dupIds, dupYt,
   badApp: VIDEOS.filter(v => v.app !== null && !appIds.has(v.app)).map(v => v.id + " -> app:'" + v.app + "'"),
   badAx:  VIDEOS.filter(v => !axIds.has(v.ax)).map(v => v.id + " -> ax:'" + v.ax + "'"),
@@ -201,6 +205,8 @@ def main():
 
     print()
     print('[data.js] {} تطبيقًا · {} فيديو'.format(rep['apps'], rep['videos']))
+    for pl in rep.get('playlists', []):
+        print('           قائمة تشغيل: ' + pl)
     problems = 0
     for label, items in (
         ('معرّفات فيديو مكرّرة',            rep['dupIds']),

@@ -119,12 +119,12 @@ const APPS = [
 const VIDEOS = [
   {
     id: 'platform-full',
-    yt: 'https://www.youtube.com/watch?v=IpUwWLhKVbw&list=PLXLNCsFCVkMs',
+    yt: 'https://www.youtube.com/playlist?list=PLXLNCsFCVkMs',
     app: null,
-    t: 'الجولة الكاملة في المنصّة الموحّدة',
-    d: 'عرض شامل للمنصّة من التثبيت إلى الاستعمال اليومي، تطبيقًا تطبيقًا.',
-    dur: '71:18',
-    len: 4278,
+    t: 'قائمة التشغيل الكاملة — كل التطبيقات',
+    d: 'كل الجولات المصوَّرة في قائمة واحدة تُشغَّل تباعًا، تطبيقًا تطبيقًا.',
+    dur: '16 فيديو',
+    len: 0,          // قائمة تشغيل: لا استئناف من نقطة توقّف
     img: 'cover',
     ax: 'lead',
     featured: true
@@ -325,13 +325,30 @@ const VIDEOS = [
 
 ];
 
-/* يستخرج معرّف يوتيوب من أي صيغة رابط، ويعيد '' إن كان الحقل فارغًا أو غير صالح */
+/* يستخرج معرّف الفيديو من أي صيغة رابط، ويعيد '' إن لم يوجد */
 function ytId(v) {
   const raw = String((v && v.yt) || '').trim();
   if (!raw) return '';
   const m = raw.match(/(?:youtu\.be\/|\/embed\/|\/live\/|\/shorts\/|[?&]v=)([\w-]{11})/)
          || raw.match(/^([\w-]{11})$/);
   return m ? m[1] : '';
+}
+
+/* يستخرج معرّف قائمة التشغيل إن كان الرابط قائمةً (list=...) */
+function ytList(v) {
+  const raw = String((v && v.yt) || '').trim();
+  const m = raw.match(/[?&]list=([\w-]+)/);
+  return m ? m[1] : '';
+}
+
+/* مصدر التشغيل: قائمة كاملة أو فيديو مفرد أو لا شيء.
+   الأولوية للقائمة حين لا يحمل الرابط معرّف فيديو — وهي حالة
+   رابط /playlist?list=… الذي نستعمله للجولة الكاملة. */
+function ytSrc(v) {
+  const list = ytList(v), id = ytId(v);
+  if (list && !id) return { kind: 'playlist', id: list };
+  if (id)          return { kind: 'video',    id, list };
+  return { kind: '', id: '' };
 }
 
 /* ── الأدلة العامة (مكتبة PDF) ── */
@@ -363,16 +380,22 @@ const VID = id => VIDEOS.find(v => v.id === id);
    الإصدارات على GitHub. عند كل إصدار جديد: حدِّث APP_VERSION
    و APP_SIZE هنا فقط — بقية الصفحات تقرأ منهما.
 
-   الزرّ يقصد صفحة /releases/latest لا رابط الملف المباشر عمدًا:
-   اسم الملف يحمل رقم الإصدار، فأي رابط مباشر يصير 404 عند أوّل
-   تحديث. صفحة الإصدارات لا تنكسر أبدًا.
+   التنزيل مباشر عبر رابط مثبَّت بالإصدار (releases/download/vX.Y.Z/…).
+   تعمّدنا تجنّب صيغة releases/latest/download/<اسم-الملف>: اسم الملف
+   يحمل رقم الإصدار، فتلك الصيغة تصير 404 لحظة صدور إصدار جديد.
+   الرابط المثبَّت لا ينكسر أبدًا، وأسوأ ما فيه أن يتقادم — والتطبيق
+   يحدّث نفسه عند أوّل إقلاع فيُصلح ذلك تلقائيًّا.
+
+   لجعل الرابط دائمًا حديثًا: ارفع في كل إصدار نسخة إضافية باسم ثابت
+   بلا رقم (MansatTadbir-setup.exe)، عندها تصلح صيغة latest/download.
    ═══════════════════════════════════════════════════════════ */
 const APP_NAME     = 'منصة التدبير المدرسي';
 const APP_VERSION  = '2.2.1';
 const APP_SIZE     = '3.3 ميغابايت';
 const APP_REPO     = 'https://github.com/profamine/minsassatatadibiralmadrassi';
-const APP_RELEASES = `${APP_REPO}/releases/latest`;
 const APP_SETUP    = `MansatTadbir_${APP_VERSION}_x64-setup.exe`;
+const APP_DOWNLOAD = `${APP_REPO}/releases/download/v${APP_VERSION}/${APP_SETUP}`;
+const APP_RELEASES = `${APP_REPO}/releases/latest`;   // صفحة كل الإصدارات
 /* الخطّ المائل العكسي مُضاعَف: نصّ عادي لا String.raw، لأن القالب الخام
    لا يصحّ أن ينتهي بخطّ مائل (يهرب من علامة الإغلاق فيبتلع ما بعده). */
 const APP_DATA_DIR = '%APPDATA%\\ma.tadbir.mansat\\';

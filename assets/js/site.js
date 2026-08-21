@@ -435,15 +435,23 @@ function initVideos() {
     stage.classList.remove('err');
   };
 
-  /* تركيب إطار يوتيوب مع البدء من موضع التوقّف */
-  const mountYT = (vid, at) => {
+  /* تركيب إطار يوتيوب: فيديو مفرد أو قائمة تشغيل كاملة.
+     القائمة تُركَّب على المسار الخاصّ /embed/videoseries?list=… فتُشغَّل
+     من أوّلها تباعًا، ولا معنى فيها للبدء من موضع توقّف. */
+  const mountYT = (src, at) => {
     const params = new URLSearchParams({
       autoplay: '1', rel: '0', modestbranding: '1', playsinline: '1',
       hl: 'ar', cc_lang_pref: 'ar', enablejsapi: '1'
     });
-    if (at > 0) params.set('start', String(at));
+    const isList = src.kind === 'playlist';
+    if (isList) params.set('list', src.id);
+    else {
+      if (src.list) params.set('list', src.list);
+      if (at > 0) params.set('start', String(at));
+    }
     if (location.protocol.startsWith('http')) params.set('origin', location.origin);
-    embed.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${vid}?${params}"
+    const path = isList ? 'videoseries' : src.id;
+    embed.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${path}?${params}"
       title="${cur ? cur.t : 'فيديو توضيحي'}" allowfullscreen
       referrerpolicy="strict-origin-when-cross-origin"
       allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>`;
@@ -470,8 +478,8 @@ function initVideos() {
     if (!cur) return;
     poster.classList.add('hide');
     resume.classList.remove('on');
-    const vid = ytId(cur), at = positions()[cur.id] || 0;
-    if (vid) mountYT(vid, at);
+    const src = ytSrc(cur), at = positions()[cur.id] || 0;
+    if (src.kind) mountYT(src, at);
     else {
       video.style.display = '';
       if (at > 3 && at < (cur.len || 1e9) - 10) { try { video.currentTime = at; } catch (_) {} }
@@ -485,11 +493,11 @@ function initVideos() {
     cur = v;
     const ax = AX(v.ax);
     stage.style.setProperty('--c', ax.c); stage.style.setProperty('--c2', ax.c2);
-    if (!ytId(v)) { video.style.display = ''; video.src = P.video(v.id); video.load(); }
+    if (!ytSrc(v).kind) { video.style.display = ''; video.src = P.video(v.id); video.load(); }
     poster.style.backgroundImage = `url("${imgOf(v.img)}")`;
     poster.classList.remove('hide');
     title.textContent = v.t;
-    desc.textContent = v.d + ' · ' + v.dur + ' دقيقة';
+    desc.textContent = v.d + ' · ' + v.dur + (ytSrc(v).kind === 'playlist' ? '' : ' دقيقة');
     $$('.vitem', list).forEach(b => b.classList.toggle('on', b.dataset.id === id));
     history.replaceState(null, '', '?v=' + id);
 
@@ -504,7 +512,7 @@ function initVideos() {
   video.addEventListener('timeupdate', () => { if (cur && video.currentTime > 5) savePos(cur.id, video.currentTime); });
   video.addEventListener('ended', () => { if (cur) clearPos(cur.id); });
   video.addEventListener('error', () => {
-    if (!cur || ytId(cur) || !video.getAttribute('src')) return;
+    if (!cur || ytSrc(cur).kind || !video.getAttribute('src')) return;
     stage.classList.add('err');
     title.textContent = 'تعذّر تشغيل هذا الفيديو';
     desc.textContent = 'ملف الفيديو غير موجود ولم يُضَف رابط يوتيوب بعد — راجع الحقل yt في assets/js/data.js';
@@ -541,7 +549,7 @@ function initVideos() {
   });
 
   // تذكير في وحدة التحكّم بالفيديوهات التي لم تُربط بيوتيوب بعد
-  const pending = VIDEOS.filter(v => !ytId(v)).map(v => v.id);
+  const pending = VIDEOS.filter(v => !ytSrc(v).kind).map(v => v.id);
   if (pending.length) console.info(
     `[المنصّة] ${pending.length} فيديو ما زال يُشغَّل محليًّا من مجلّد videos/: ${pending.join('، ')}` +
     `\nلنقلها إلى يوتيوب: املأ الحقل yt المقابل لكلٍّ منها في assets/js/data.js`);
@@ -614,7 +622,8 @@ function initAppMeta() {
   set('#mSize, #mSize2, .js-size', APP_SIZE);
   set('#mSetup, .js-setup', APP_SETUP);
   set('.js-datadir', APP_DATA_DIR);
-  $$('#dlBtn, .js-dl').forEach(a => { a.href = APP_RELEASES; });
+  $$('#dlBtn, .js-dl').forEach(a => { a.href = APP_DOWNLOAD; });
+  $$('.js-releases').forEach(a => { a.href = APP_RELEASES; });
 }
 
 /* ─────────── تضمين استمارة جوجل ─────────── */
