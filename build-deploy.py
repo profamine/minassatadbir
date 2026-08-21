@@ -92,10 +92,38 @@ def missing_assets(rep):
     return miss
 
 
+def dist_edits():
+    """ملفات dist/ التي عُدِّلت بعد نسخها — أي تعديلات ستُمحى عند إعادة البناء.
+
+    dist/ مجلّد مولَّد يُحذف كاملًا في كل تشغيل. من السهل جدًّا فتح نسخة منه
+    بالخطأ وتعديلها ثم فقدانها بلا أثر (المجلّد مستبعد من git). هذا الحارس
+    يوقف البناء بدل أن يمحو صامتًا.
+    """
+    if not DIST.exists():
+        return []
+    out = []
+    for d in DIST.rglob('*'):
+        if d.is_dir():
+            continue
+        rel = d.relative_to(DIST)
+        src = ROOT / rel
+        if not src.exists():
+            continue                      # ملفات يولّدها السكربت (robots/sitemap)
+        if d.stat().st_mtime > src.stat().st_mtime + 2:
+            out.append(str(rel).replace('\\', '/'))
+    return out
+
+
 def copy_site():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
+    (DIST / '_مجلد-مولد-لا-تعدله.txt').write_text(
+        chr(10).join([
+            'هذا المجلّد يُنشئه build-deploy.py ويُحذف بالكامل في كل تشغيل.',
+            'أي تعديل هنا سيضيع. عدّل الملفات الأصلية في جذر المشروع.',
+            '',
+        ]), encoding='utf-8')
     total = files = 0
     biggest = (0, '')
     for src in ROOT.rglob('*'):
@@ -140,7 +168,21 @@ def write_seo(domain):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--domain', default='', help='مثال: almanassa.pages.dev')
+    ap.add_argument('--force', action='store_true',
+                    help='أعد البناء ولو كانت في dist/ تعديلات ستُمحى')
     args = ap.parse_args()
+
+    edits = dist_edits()
+    if edits and not args.force:
+        print('[توقّف] في dist/ ملفات عُدِّلت بعد بنائها:')
+        for e in edits:
+            print('   - dist/' + e)
+        print()
+        print('dist/ مجلّد مولَّد: يُحذف بالكامل ويُعاد بناؤه في كل تشغيل،')
+        print('وهو مستبعد من git فلا يمكن استرجاع ما يضيع منه.')
+        print('انقل تعديلاتك إلى الملف الأصلي في جذر المشروع (بلا dist/ في المسار)')
+        print('ثم أعد التشغيل — أو مرّر --force لمحوها عمدًا.')
+        return 2
 
     files, total, biggest = copy_site()
     had_sitemap = write_seo(args.domain)
