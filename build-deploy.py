@@ -21,7 +21,7 @@ DIST = ROOT / 'dist'
 PAGES = ['index.html', 'apps.html', 'videos.html', 'guide.html', 'download.html']
 SKIP_DIRS = {'videos', '.claude', 'dist', '__pycache__', '.git'}
 # ملف المنصّة نفسه لا يُنشر: يُوزَّع بالطلب عبر البريد
-SKIP_FILES = {'README.md', 'build-deploy.py', 'unified-platform.html'}
+SKIP_FILES = {'README.md', 'build-deploy.py', 'bump.py', 'unified-platform.html'}
 # أنماط تُستبعد أيضًا: أرشيفات البناء وملفات الملاحظات المحلّية
 SKIP_GLOBS = ('*.zip', '*.netl.txt', '*.swp', 'Thumbs.db', 'desktop.ini')
 

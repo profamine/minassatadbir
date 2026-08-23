@@ -376,32 +376,31 @@ const VID = id => VIDEOS.find(v => v.id === id);
 /* ═══════════════════════════════════════════════════════════
    التطبيق — الإصدار والتنزيل
    ───────────────────────────────────────────────────────────
-   المنصّة تطبيق سطح مكتب لويندوز (Tauri/NSIS) يُنزَّل من صفحة
-   الإصدارات على GitHub. عند كل إصدار جديد: حدِّث APP_VERSION
-   و APP_SIZE هنا فقط — بقية الصفحات تقرأ منهما.
+   القيم أدناه *احتياطية* فقط: الموقع يسأل واجهة GitHub عن آخر
+   إصدار عند كل زيارة ويعرض ما تجيب به. فإن تعذّر الاتصال أو
+   عُطِّل جافاسكريبت، ظهرت هذه القيم بدلها.
 
-   التنزيل مباشر عبر رابط مثبَّت بالإصدار (releases/download/vX.Y.Z/…).
-   تعمّدنا تجنّب صيغة releases/latest/download/<اسم-الملف>: اسم الملف
-   يحمل رقم الإصدار، فتلك الصيغة تصير 404 لحظة صدور إصدار جديد.
-   الرابط المثبَّت لا ينكسر أبدًا، وأسوأ ما فيه أن يتقادم — والتطبيق
-   يحدّث نفسه عند أوّل إقلاع فيُصلح ذلك تلقائيًّا.
+   ⇐ لا تحتاج تعديل أي شيء هنا عند إصدار جديد.
+     حدِّثها فقط إن أردت أن تكون النسخة الاحتياطية دقيقة أيضًا.
 
-   لجعل الرابط دائمًا حديثًا: ارفع في كل إصدار نسخة إضافية باسم ثابت
-   بلا رقم (MansatTadbir-setup.exe)، عندها تصلح صيغة latest/download.
+   رابط التنزيل ثابت لا يحمل رقم إصدار، لأن الإصدارات صارت تحوي
+   أصلًا باسم ثابت (MansatTadbir-setup.exe) إلى جانب المُرقَّم.
+   فهو يشير دائمًا إلى الأحدث ولا ينكسر ولا يتقادم.
    ═══════════════════════════════════════════════════════════ */
 const APP_NAME     = 'منصة التدبير المدرسي';
-const APP_VERSION  = '2.2.1';
-const APP_SIZE     = '3.3 ميغابايت';
 const APP_REPO     = 'https://github.com/profamine/minsassatatadibiralmadrassi';
-const APP_SETUP    = `MansatTadbir_${APP_VERSION}_x64-setup.exe`;
-/* بصمة المثبِّت — تُحدَّث مع كل إصدار. تُستخرج بـ:
-   Get-FileHash .\MansatTadbir_X.Y.Z_x64-setup.exe -Algorithm SHA256   */
-const APP_SHA256   = '6ce9d8d2eb0715b3581de0f18553762622aedfb2f7b73e5955e763190a588368';
-const APP_DOWNLOAD = `${APP_REPO}/releases/download/v${APP_VERSION}/${APP_SETUP}`;
+const APP_SETUP    = 'MansatTadbir-setup.exe';        // الاسم الثابت في كل إصدار
+const APP_DOWNLOAD = `${APP_REPO}/releases/latest/download/${APP_SETUP}`;
 const APP_RELEASES = `${APP_REPO}/releases/latest`;   // صفحة كل الإصدارات
-/* الخطّ المائل العكسي مُضاعَف: نصّ عادي لا String.raw، لأن القالب الخام
-   لا يصحّ أن ينتهي بخطّ مائل (يهرب من علامة الإغلاق فيبتلع ما بعده). */
-const APP_DATA_DIR = '%APPDATA%\\ma.tadbir.mansat\\';
+const APP_API      = APP_REPO.replace('https://github.com/',
+                     'https://api.github.com/repos/') + '/releases/latest';
+
+/* ــ قيم احتياطية (آخر تحديث يدوي: v4.0.0) ــ */
+const APP_VERSION  = '4.0.0';
+const APP_SIZE     = '3.3 ميغابايت';
+const APP_SHA256   = '4431e185d51cabfae0f2ff7c3b3e8f502db892cf7cfb4589217816aa1d03d147';
+
+const APP_DATA_DIR = '%APPDATA%\\ma.tadbir.mansat\\'; 
 
 /* ═══════════════════════════════════════════════════════════
    استمارة الطلب — استمارة جوجل مضمَّنة

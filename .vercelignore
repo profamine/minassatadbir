@@ -1,6 +1,7 @@
 # ملفات تخصّ المستودع لا النشر — لا داعي لرفعها إلى فيرسل
 README.md
 build-deploy.py
+bump.py
 .gitattributes
 
 # ترويسات كلاودفلير/نيتليفاي — فيرسل يقرأ vercel.json بدلها

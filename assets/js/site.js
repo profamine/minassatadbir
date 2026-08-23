@@ -614,17 +614,56 @@ function initCmdK() {
 }
 
 /* ─────────── معطيات الإصدار في الصفحات ─────────── */
-/* رقم الإصدار والحجم واسم الملف تُكتب من data.js لا في HTML،
-   فتحديث إصدار جديد يمسّ ثابتًا واحدًا لا خمس صفحات. */
+/* القيم تُكتب أوّلًا من ثوابت data.js (تعمل بلا شبكة وبلا انتظار)،
+   ثم تُحدَّث من واجهة GitHub إن أجابت — فلا يتقادم رقم الإصدار
+   ولا الحجم ولا البصمة عند أي إصدار جديد دون تعديل الموقع. */
+const setMeta = (sel, val) => $$(sel).forEach(n => { n.textContent = val; });
+
 function initAppMeta() {
-  const set = (sel, val) => $$(sel).forEach(n => { n.textContent = val; });
-  set('#mVersion, .js-version', APP_VERSION);
-  set('#mSize, #mSize2, .js-size', APP_SIZE);
-  set('#mSetup, .js-setup', APP_SETUP);
-  set('.js-datadir', APP_DATA_DIR);
-  set('.js-sha', APP_SHA256);
+  setMeta('#mVersion, .js-version', APP_VERSION);
+  setMeta('#mSize, #mSize2, .js-size', APP_SIZE);
+  setMeta('#mSetup, .js-setup', APP_SETUP);
+  setMeta('.js-datadir', APP_DATA_DIR);
+  setMeta('.js-sha', APP_SHA256);
   $$('#dlBtn, .js-dl').forEach(a => { a.href = APP_DOWNLOAD; });
   $$('.js-releases').forEach(a => { a.href = APP_RELEASES; });
+  refreshAppMeta();
+}
+
+const REL_KEY = 'mm_app_release', REL_TTL = 6 * 3600e3;   // ذاكرة ستّ ساعات
+
+/* حجم بالبايت ← نصّ عربي مختصر */
+const mb = n => (n / 1048576).toFixed(1).replace(/\.0$/, '') + ' ميغابايت';
+
+async function refreshAppMeta() {
+  let d = null;
+  try {
+    const c = JSON.parse(localStorage.getItem(REL_KEY) || 'null');
+    if (c && Date.now() - c.t < REL_TTL) d = c.d;
+  } catch (_) {}
+
+  if (!d) {
+    try {
+      const r = await fetch(APP_API, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!r.ok) return;                       // 403 عند تجاوز الحدّ مثلًا
+      const rel = await r.json();
+      const asset = (rel.assets || []).find(a => a.name === APP_SETUP)
+                 || (rel.assets || []).find(a => /-setup\.exe$/i.test(a.name));
+      if (!asset) return;
+      d = {
+        v: String(rel.tag_name || '').replace(/^v/i, ''),
+        size: asset.size,
+        sha: String(asset.digest || '').replace(/^sha256:/i, ''),
+        name: asset.name
+      };
+      localStorage.setItem(REL_KEY, JSON.stringify({ t: Date.now(), d }));
+    } catch (_) { return; }                    // بلا شبكة: تبقى القيم الاحتياطية
+  }
+
+  if (d.v)    setMeta('#mVersion, .js-version', d.v);
+  if (d.size) setMeta('#mSize, #mSize2, .js-size', mb(d.size));
+  if (d.sha)  setMeta('.js-sha', d.sha);
+  if (d.name) setMeta('#mSetup, .js-setup', d.name);
 }
 
 /* ─────────── تضمين استمارة جوجل ─────────── */
